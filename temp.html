@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Memory Card Game</title>
+</head>
+<style>
+    body {
+        background-image: linear-gradient(to right, rgb(167, 208, 230), rgb(57, 106, 141)); 
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+    }
+
+    #header {
+        text-align: center;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    #mainDiv {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    #imagesDiv {
+        display: grid;
+        grid-template-columns: 105px 105px 105px 105px;
+        gap: 5px;
+        justify-content: center;        
+        padding: 20px;
+        box-shadow: 8px 9px 5px 0px rgba(20, 23, 25, 0.08);
+        -webkit-box-shadow: 8px 9px 5px 0px rgba(20, 23, 25, 0.08);
+        -moz-box-shadow: 8px 9px 5px 0px rgba(20, 23, 25, 0.08);
+    }
+
+
+</style>
+<script>
+    let imagesObjs = [{id:1, img:"images/1.png"},
+                        {id:2, img:"images/6.png"},
+                        {id:3, img:"images/3.png"},
+                        {id:4, img:"images/2.png"},
+                        {id:5, img:"images/4.png"},
+                        {id:6, img:"images/5.png"},
+                        {id:7, img:"images/8.png"},
+                        {id:8, img:"images/1.png"},
+                        {id:9, img:"images/5.png"},
+                        {id:10, img:"images/3.png"},
+                        {id:11, img:"images/6.png"},
+                        {id:12, img:"images/4.png"},
+                        {id:13, img:"images/7.png"},
+                        {id:14, img:"images/2.png"},
+                        {id:15, img:"images/8.png"},
+                        {id:16, img:"images/7.png"}];
+
+    let count = 0;
+    let clickedImagesArray = [];
+    let questionMarkImage = "images/temp.png";
+
+
+    $('document').ready(function() {
+        $("#imagesDiv").html('');
+
+        // for (let i=0; i<imagesObjs.length; i++) {
+        //     let newObj = $('<img src="' + imagesObjs[i].img + '" onclick="showImage(this, ' + (i+1) + ')" />');
+        //     $("#imagesDiv").append(newObj);
+        // }
+
+        for (let i=0; i<imagesObjs.length; i++) {
+            let newObj = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + (i+1) + ')" />');
+            $("#imagesDiv").append(newObj);
+        }
+
+        // let interval = setInterval(() => {
+        //     let svg1 = $("#svg1");
+        //     let c = $("#svg1 circle");
+            
+        // });
+    })
+
+    function replaceImages() {
+        for (let obj of clickedImagesArray) {
+            setTimeout(() => {
+                let htmlId = "#" + obj.id;
+                let qImage = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + obj.id + ')" />');
+                $(htmlId).replaceWith(qImage);
+                
+            }, 1000);
+        }
+    }
+
+    function showImage(self, id) {
+        if (clickedImagesArray.length == 2) {
+            // do nothing
+        }
+        else {
+            let clickedImage = imagesObjs.filter((v, i, array) => v.id == id)[0];
+            let html = '<img id="' + id + '" src="' + clickedImage.img + '" />';
+            let imageHtml = $(html);
+            $(self).replaceWith(imageHtml);
+            
+            clickedImagesArray.push(clickedImage);
+
+            if (clickedImagesArray.length == 2) {
+                if (!(clickedImagesArray[0].img == clickedImagesArray[1].img)) {
+                    replaceImages();
+                }
+                else {
+                    count ++;
+                }
+
+                clickedImagesArray = [];
+            }
+        }
+    }
+</script>
+<body>
+    <h1 id="header">Memory Card Game</h1>
+    <div id="mainDiv">
+        <div>
+            <!-- <svg class="move" id="svg1" height="60" width="60">
+                <circle cx="50" cy="50"  r="10" fill="red" />
+            </svg> -->
+            <!-- <svg class="move" id="svg1" height="60" width="60">
+                <circle cx="50" cy="50" r="10" fill="red" />
+            </svg> -->
+            <!-- <svg height="60" width="60">
+                <circle cx="50" cy="50" r="10" fill="blue" />
+            </svg>
+            <svg height="60" width="60">
+                <circle cx="50" cy="50" r="10" fill="green" />
+            </svg>
+            <svg height="60" width="60">
+                <circle cx="50" cy="50" r="10" fill="yellow" />
+            </svg>
+            <svg height="60" width="60">
+                <circle cx="50" cy="50" r="10" fill="orange" />
+            </svg> -->
+        </div>
+        <div id="imagesDiv"></div>
+        <div></div>
+    </div>
+</body>
+</html>
