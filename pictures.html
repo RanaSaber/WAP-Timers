@@ -1,10 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>Memory Card Game</title>
+    <script>
+        let total = 5;
+        let minute = 0;
+        let seconds = 59;
+        $(function () {
+            setup();
+        });
+
+        let intId = setInterval(timer, 1000);
+
+        function setup() {
+            let minuteDiv = $('#myMin');
+            let secondsDiv = $('#mySec');
+            let html = '';
+            if (total < 10) {
+                html = '<label>0' + total + '</label>';
+            } else {
+                html = '<label>' + total + '</label>';
+            }
+            minuteDiv.empty();
+            secondsDiv.empty();
+            minuteDiv.append(html);
+            html = '<label>00</label>';
+            secondsDiv.append(html);
+            minute = total - 1;
+        }
+
+        function timer() {
+            let minuteDiv = $('#myMin');
+            let secondsDiv = $('#mySec');
+            let result = $('#result');
+            let html = '';
+            if (seconds >= 0) {
+                minuteDiv.empty();
+                secondsDiv.empty();
+                if (minute < 10) {
+                    html = '<label>0' + minute + '</label>';
+                } else {
+                    html = '<label>' + minute + '</label>';
+                }
+                minuteDiv.append(html);
+                if (seconds < 10) {
+                    html = '<label>0' + seconds + '</label>';
+                } else {
+                    html = '<label>' + seconds + '</label>';
+                }
+                secondsDiv.append(html);
+                seconds--;
+
+            } else {
+                if (minute > 0) {
+                    minute--;
+                    if (minute < 10) {
+                        html = '<label>0' + minute + '</label>';
+                    } else {
+                        html = '<label>' + minute + '</label>';
+                    }
+                    minuteDiv.append(html);
+                    minuteDiv.html(html);
+                    seconds = 59;
+                    html = '<label>' + seconds + '</label>';
+                    secondsDiv.html(html);
+                } else {
+                    result.append('<label>Finished!</label>');
+                    clearInterval(intId);
+                }
+
+            }
+        }
+        function pause() {
+            let resume = $('#resume');
+            let pause = $('#pause');
+            clearInterval(intId);
+            resume.addClass('show');
+            resume.removeClass('hide');
+            pause.addClass('hide');
+        }
+        function resume() {
+            let resume = $('#resume');
+            let pause = $('#pause');
+            intId = setInterval(timer, 1000);
+            pause.addClass('show');
+            pause.removeClass('hide');
+            resume.addClass('hide');
+        }
+        function restart() {
+            setup();
+            seconds = 59;
+            clearInterval(intId);
+            resume();
+        }
+
+    </script>
 </head>
 <style>
     body {
@@ -27,31 +121,82 @@
         gap: 5px;
         justify-content: center;
     }
+
+    #myDiv {
+        display: flow-root;
+        font-size: 30px;
+        width: 25%;
+        gap: 10px;
+        padding: 10px;
+        margin-left: 25%;
+        margin-top: 20%;
+    }
+
+    .time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #FFFFFF99;
+        border-radius: 10px;
+    }
+
+    .hide {
+        display: none;
+        background-color: black;
+        color: aliceblue;
+        border-radius: 10px;
+        width: 100%;
+        font-size: 15px;
+        height: 25px;
+    }
+
+    .btn {
+        background-color: black;
+        color: aliceblue;
+        border-radius: 10px;
+        width: 100%;
+        font-size: 15px;
+        height: 25px;
+    }
+
+    .show {
+        background-color: black;
+        color: aliceblue;
+        border-radius: 10px;
+        width: 100%;
+        font-size: 15px;
+        height: 25px;
+    }
+
+    #container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 </style>
 <script>
-    let imagesObjs = [{id:1, img:"images/apple.jpeg"},
-                        {id:2, img:"images/banana.jpeg"},
-                        {id:3, img:"images/kiwi.jpeg"},
-                        {id:4, img:"images/apple.jpeg"},
-                        {id:5, img:"images/kiwi.jpeg"},
-                        {id:6, img:"images/orange.jpeg"},
-                        {id:7, img:"images/watermelon.jpeg"},
-                        {id:8, img:"images/watermelon.jpeg"},
-                        {id:9, img:"images/mango.jpeg"},
-                        {id:10, img:"images/banana.jpeg"},
-                        {id:11, img:"images/orange.jpeg"},
-                        {id:12, img:"images/mango.jpeg"}];
+    let imagesObjs = [{ id: 1, img: "images/apple.jpeg" },
+    { id: 2, img: "images/banana.jpeg" },
+    { id: 3, img: "images/kiwi.jpeg" },
+    { id: 4, img: "images/apple.jpeg" },
+    { id: 5, img: "images/kiwi.jpeg" },
+    { id: 6, img: "images/orange.jpeg" },
+    { id: 7, img: "images/watermelon.jpeg" },
+    { id: 8, img: "images/watermelon.jpeg" },
+    { id: 9, img: "images/mango.jpeg" },
+    { id: 10, img: "images/banana.jpeg" },
+    { id: 11, img: "images/orange.jpeg" },
+    { id: 12, img: "images/mango.jpeg" }];
 
     let count = 0;
     let clickedImagesArray = [];
     let questionMarkImage = "images/questionMark.png";
 
 
-    $('document').ready(function() {
+    $('document').ready(function () {
         $("#imagesDiv").html('');
 
-        for (let i=0; i<imagesObjs.length; i++) {
-            let newObj = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + (i+1) + ')" />');
+        for (let i = 0; i < imagesObjs.length; i++) {
+            let newObj = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + (i + 1) + ')" />');
             $("#imagesDiv").append(newObj);
         }
     })
@@ -62,7 +207,7 @@
                 let htmlId = "#" + obj.id;
                 let qImage = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + obj.id + ')" />');
                 $(htmlId).replaceWith(qImage);
-                
+
             }, 1000);
         }
     }
@@ -76,7 +221,7 @@
             let html = '<img id="' + id + '" src="' + clickedImage.img + '" />';
             let imageHtml = $(html);
             $(self).replaceWith(imageHtml);
-            
+
             clickedImagesArray.push(clickedImage);
 
             if (clickedImagesArray.length == 2) {
@@ -84,7 +229,7 @@
                     replaceImages();
                 }
                 else {
-                    count ++;
+                    count++;
                 }
 
                 clickedImagesArray = [];
@@ -92,10 +237,29 @@
         }
     }
 </script>
+
 <body>
-    <h1 id="header">Memory Card Game</h1>
-    <div id="mainDiv">
-        <div id="imagesDiv"></div>
+    <div id="container">
+        <div id="myDiv">
+            <div class="time">
+                <div id="myMin"></div>:
+                <div id="mySec"></div>
+            </div>
+            <div><button onclick="restart()" id="restart" class="btn">Restart</button>
+                <button onclick="pause()" id="pause" class="btn">Pause</button>
+                <button onclick="resume()" id="resume" class="hide">Resume</button>
+            </div>
+        </div>
+        <div>
+            <h1 id="header">Memory Card Game</h1>
+            <div id="mainDiv">
+                <div id="imagesDiv"></div>
+            </div>
+        </div>
+        <div id = "result"></div>
+
     </div>
+
 </body>
+
 </html>
