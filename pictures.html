@@ -137,6 +137,7 @@
         html = '<label>00</label>';
         secondsDiv.append(html);
         minute = total - 1;
+        seconds = 59;
     }
 
     function timer() {
@@ -200,13 +201,16 @@
     function restart() {
         let restart = $('#restart');
         let start = $('#start');
+        let resume = $('#resume');
+        let pause = $('#pause');
         setup();
-        seconds = 59;
         clearInterval(intId);
         start.addClass('show');
         start.removeClass('hide');
         restart.addClass('hide');
-        resume();
+        pause.addClass('show');
+        pause.removeClass('hide');
+        resume.addClass('hide');
     }
     function start() {
         let restart = $('#restart');
