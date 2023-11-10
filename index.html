@@ -1,2 +1,39 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Memory Card Game</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="index.js"></script> 
+</head>
+<body>
+
+    <h1 id="header">Memory Card Game</h1>
+    <div id="mainDiv">
+        <div id="container">
+            <div id="myDiv">
+                <div class="time">
+                    <div id="myMin"></div>:
+                    <div id="mySec"></div>
+                </div>
+                <div>
+                    <button onclick="start()" id="start" class="btn">Start</button>
+                    <button onclick="restart()" id="restart" class="hide">Re-Start</button>
+                    <button onclick="pause()" id="pause" class="btn">Pause</button>
+                    <button onclick="resume()" id="resume" class="hide">Resume</button>
+                </div>
+            </div>
+            <div id="result">
+                <label>Count:</label></label><label id="cnt">0</label>/<label id="total">8</label>
+            </div>
+        </div>
+        <div id="imagesDiv"></div>
+        <div></div>
+    </div>
+
+</body>
+
 </html>
