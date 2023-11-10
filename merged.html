@@ -89,6 +89,11 @@
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
     }
+
+    svg {
+        position: absolute;
+        z-index: -1;;
+    }
 </style>
 
 <script>
@@ -108,6 +113,22 @@
                         {id:14, img:"images/2.png"},
                         {id:15, img:"images/8.png"},
                         {id:16, img:"images/7.png"}];
+
+    let dotsArray = [{id:"svg1", color:'red'},
+                        {id:"svg2", color:'blue'},
+                        {id:"svg3", color:'yellow'},
+                        {id:"svg4", color:'orange'},
+                        {id:"svg5", color:'green'},
+                        {id:"svg6", color:'darkgreen'},
+                        {id:"svg7", color:'grey'},
+                        {id:"svg8", color:'white'},
+                        {id:"svg9", color:'black'},
+                        {id:"svg10", color:'pink'},
+                        {id:"svg11", color:'red'},
+                        {id:"svg12", color:'yellow'},
+                        {id:"svg13", color:'orange'},
+                        {id:"svg14", color:'green'},
+                        {id:"svg15", color:'blue'}];
 
     let count = 0;
     let clickedImagesArray = [];
@@ -199,7 +220,22 @@
 		seconds = 59;
 		clearInterval(intId);
 		resume();
-        }
+    }
+
+    function changePosition(id, color) {
+        let mysvg = $("#" + id);
+        //random numbers
+        random = {
+            a: Math.floor(Math.random()*800),
+            b: Math.floor(Math.random()*800)
+        };
+
+        let html = '<svg id="' + id + '" style="width:300; height:300; position:absolute; top:' + random.a +
+        'px; left:' + random.b + 'px"><circle style="cx:50; cy:50; r:10; fill:' + color + '" /></svg>';
+        let newSvg = $(html);
+
+        mysvg.replaceWith(newSvg);
+    }
 
     $('document').ready(function () {
 		setup();
@@ -214,6 +250,21 @@
         for (let i=0; i<imagesObjs.length; i++) {
             let newObj = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + (i+1) + ')" />');
             $("#imagesDiv").append(newObj);
+        }
+
+        for (let dot of dotsArray) {
+            let html = '<svg id="' + dot.id + '" style="width:300; height:300; position:absolute; ' +
+            'top:50px; left:50px"><circle style="cx:50; cy:50; r:10; fill:' + dot.color + '" /></svg>';
+
+            let newSVG = $(html);
+
+            $("body").append(newSVG);
+        }
+
+        for (let dot of dotsArray) {
+            setInterval(function() {
+                changePosition(dot.id, dot.color);
+            }, 1000);
         }
     })
 
@@ -255,7 +306,6 @@
 </script>
 
 <body>
-
     <div id="container">
         <div id="myDiv">
             <div class="time">
@@ -272,26 +322,7 @@
 	
     <h1 id="header">Memory Card Game</h1>
     <div id="mainDiv">
-        <div>
-            <!-- <svg class="move" id="svg1" height="60" width="60">
-                <circle cx="50" cy="50"  r="10" fill="red" />
-            </svg> -->
-            <!-- <svg class="move" id="svg1" height="60" width="60">
-                <circle cx="50" cy="50" r="10" fill="red" />
-            </svg> -->
-            <!-- <svg height="60" width="60">
-                <circle cx="50" cy="50" r="10" fill="blue" />
-            </svg>
-            <svg height="60" width="60">
-                <circle cx="50" cy="50" r="10" fill="green" />
-            </svg>
-            <svg height="60" width="60">
-                <circle cx="50" cy="50" r="10" fill="yellow" />
-            </svg>
-            <svg height="60" width="60">
-                <circle cx="50" cy="50" r="10" fill="orange" />
-            </svg> -->
-        </div>
+        <div></div>
         <div id="imagesDiv"></div>
         <div></div>
     </div>
