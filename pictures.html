@@ -125,6 +125,7 @@
     function setup() {
         let minuteDiv = $('#myMin');
         let secondsDiv = $('#mySec');
+        let totalImg = $('#total');
         let html = '';
         if (total < 10) {
             html = '<label>0' + total + '</label>';
@@ -138,6 +139,8 @@
         secondsDiv.append(html);
         minute = total - 1;
         seconds = 59;
+        totalImg.empty();
+        totalImg.append(imagesObjs.length / 2);
     }
 
     function timer() {
@@ -145,6 +148,9 @@
         let secondsDiv = $('#mySec');
         let result = $('#result');
         let html = '';
+        if (count == (imagesObjs.length / 2)) {
+            clearInterval(intId);
+        }
         if (seconds >= 0) {
             minuteDiv.empty();
             secondsDiv.empty();
@@ -176,7 +182,11 @@
                 html = '<label>' + seconds + '</label>';
                 secondsDiv.html(html);
             } else {
-                result.append('<label>Finished!</label>');
+                if (count < (imagesObjs.length / 2)) {
+                    result.append('<label>Finished!</label>');
+                } else {
+                    result.append('<label>You won!</label>');
+                }
                 clearInterval(intId);
             }
 
@@ -219,6 +229,21 @@
         restart.addClass('show');
         restart.removeClass('hide');
         start.addClass('hide');
+    }
+    function stop() {
+        clearInterval(intId);
+    }
+    function add() {
+        let score = $('#cnt');
+        let totalImg = $('#total');
+        if (count < (imagesObjs.length / 2)) {
+            count++;
+            score.empty();
+            score.append(count);
+        } else {
+            stop()
+        }
+
     }
 
     $('document').ready(function () {
@@ -289,7 +314,9 @@
                 <button onclick="resume()" id="resume" class="hide">Resume</button>
             </div>
         </div>
-        <div id="result"></div>
+        <div id="result">
+            <label>Count:</label></label><label id="cnt">0</label>/<label id="total">10</label>
+        </div>
     </div>
 
     <h1 id="header">Memory Card Game</h1>
