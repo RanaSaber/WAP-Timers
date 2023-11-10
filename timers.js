@@ -221,10 +221,30 @@ function showImage(self, id) {
             }
             else {
                 add();
+                if (count == imagesObjs.length/2) {
+                    onWin();
+                }
             }
 
             clickedImagesArray = [];
         }
+    }
+}
+
+function onWin() {
+    for (let dot of dotsArray) {
+        let html = '<svg id="' + dot.id + '" style="width:300; height:300; position:absolute; ' +
+        'top:50px; left:50px"><circle style="cx:50; cy:50; r:10; fill:' + dot.color + '" /></svg>';
+
+        let newSVG = $(html);
+
+        $("body").append(newSVG);
+    }
+
+    for (let dot of dotsArray) {
+        setInterval(function() {
+            changePosition(dot.id, dot.color);
+        }, 250);
     }
 }
 
@@ -256,20 +276,5 @@ $('document').ready(function () {
     for (let i = 0; i < imagesObjs.length; i++) {
         let newObj = $('<img src="' + questionMarkImage + '" onclick="showImage(this, ' + (i + 1) + ')" />');
         $("#imagesDiv").append(newObj);
-    }
-
-    for (let dot of dotsArray) {
-        let html = '<svg id="' + dot.id + '" style="width:300; height:300; position:absolute; ' +
-        'top:50px; left:50px"><circle style="cx:50; cy:50; r:10; fill:' + dot.color + '" /></svg>';
-
-        let newSVG = $(html);
-
-        $("body").append(newSVG);
-    }
-
-    for (let dot of dotsArray) {
-        setInterval(function() {
-            changePosition(dot.id, dot.color);
-        }, 1000);
     }
 })
